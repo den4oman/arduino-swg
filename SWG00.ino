@@ -24,21 +24,21 @@
 	
 */
 /////////// Control Pins
-unsigned int SWGCtrl1       = 11; // Control Pin 1 // On Mega 11 // On Uno 9
-unsigned int SWGCtrl2       = 12; // Control Pin 2 // On Mega 12 // On Uno 10
+unsigned int SWGCtrl1       = 11; 				// Control Pin 1 // On Mega 11 // On Uno 9
+unsigned int SWGCtrl2       = 12; 				// Control Pin 2 // On Mega 12 // On Uno 10
 ///////////
 /////////// Parameters
-unsigned long SWGFreq       = 10000;							// Default Frequency 
-unsigned long SWGICRMath    = (long)(F_CPU/SWGFreq); 			// Default Timer Counter
-unsigned int SWGDutyCycle11 = 50;								// Default Duty Cycle Chanel 1
-unsigned int SWGDutyCycle12 = 50;								// Default Duty Cycle Chanel 2
+unsigned long SWGFreq       = 10000;				// Default Frequency 
+unsigned long SWGICRMath    = (long)(F_CPU/SWGFreq); 		// Default Timer Counter
+unsigned int SWGDutyCycle11 = 50;				// Default Duty Cycle Chanel 1
+unsigned int SWGDutyCycle12 = 50;				// Default Duty Cycle Chanel 2
 unsigned int SWGOCRMath11   = SWGICRMath*SWGDutyCycle11/100;    // Default Timer Counter Chanel 1
 unsigned int SWGOCRMath12   = SWGICRMath*SWGDutyCycle12/100;	// Default Timer Counter Chanel 2
-unsigned int SWGPhase1      = 0; 								// Default Phase Chanel 1 
-unsigned int SWGPhase2      = 1;								// Default Phase Chanel 2
+unsigned int SWGPhase1      = 0; 				// Default Phase Chanel 1 
+unsigned int SWGPhase2      = 1;				// Default Phase Chanel 2
 ///////////
 /////////// Command Variables
-char SWGCtrlCmm;	//Control Character
+char SWGCtrlCmm;						//Control Character
 ///////////
 
 void setup() 
@@ -66,7 +66,7 @@ void loop()
   delay(1000);
 }
 
-void SWGControlPanel()												// Control Panel
+void SWGControlPanel()						// Control Panel
 {
     Serial.println("Press 8 for Info");
     SWGCtrlCmm = 0;
@@ -77,9 +77,9 @@ void SWGControlPanel()												// Control Panel
         SWGCtrlCmm = Serial.read();
         switch (SWGCtrlCmm)
         {
-          case '1':													// Set Frequency
+          case '1':						// Set Frequency
             Serial.flush();
-            Serial.println("Enter Frequency in Hz (5s) \n");
+	    Serial.println("Enter Frequency in Hz (5s) \n");
             delay(1000);           
             SWGFreq = Serial.parseInt();
             SWGICRMath = (long)(16000000/SWGFreq);
@@ -87,7 +87,7 @@ void SWGControlPanel()												// Control Panel
             SWGOCRMath12 = (int)(SWGDutyCycle12*SWGICRMath/100);
             Serial.println(" Frequency Adjusted ");
           break;
-          case '2':													// View Information
+          case '2':						// View Information
             Serial.print("The Frequency is:   ");
             Serial.println(SWGFreq);
             Serial.print("Duty Cycle 11:   ");
@@ -105,34 +105,34 @@ void SWGControlPanel()												// Control Panel
             Serial.print("Phase2:   ");
             Serial.println(SWGPhase2);
           break;
-          case '4':													// Set Duty Cycle Chanel 1
+          case '4':						// Set Duty Cycle Chanel 1
           Serial.flush();
           Serial.println("Set Duty Cycle Chanel 11 in percentage:    ");
           SWGDutyCycle11  =  Serial.parseInt();
           SWGOCRMath11 = (int)(SWGDutyCycle11*SWGICRMath/100);
           Serial.println("Done!");         
           break;
-          case '5':													// Set Duty Cycle Chanel 2
+          case '5':						// Set Duty Cycle Chanel 2
             Serial.flush();
             Serial.println("Set Duty Cycle Chanel 12 in percentage:    ");
             SWGDutyCycle12  =  Serial.parseInt();
             SWGOCRMath12 = (int)(SWGDutyCycle12*SWGICRMath/100);
             Serial.println("Done!"); 
           break;
-          case '6':													// Set Phase For Chanel 1
+          case '6':						// Set Phase For Chanel 1
             Serial.flush();
             Serial.println("Set Inverting 11: 0 - Not , 1 - Inverted    ");
             SWGPhase1 = Serial.parseInt();
             Serial.println("Done!");           
           break;
-          case '7':													// Set Phase For Chanel 2
+          case '7':						// Set Phase For Chanel 2
             Serial.flush();
-            Serial.println("Set Inverting 12: 0 - Not , 1 - Inverted ");
+	    Serial.println("Set Inverting 12: 0 - Not , 1 - Inverted ");
             SWGPhase2 = Serial.parseInt();            
             Serial.println("Done!");         
             
           break;
-          case '8':													// Print Information
+          case '8':						// Print Information
             Serial.println("    Commands are: ");
             Serial.println(" 1: Adjust Frequency ");
             Serial.println(" 2: View Adjusted Parameters ");
@@ -146,7 +146,7 @@ void SWGControlPanel()												// Control Panel
             Serial.println(" 0: Stop Clock ");
             Serial.println("    Maximum Frequency is 1 MHz!   ");
           break;
-          case '9':													// Write To Registers and Begin
+          case '9':						// Write To Registers and Begin
             if(SWGPhase1 && SWGPhase2 == 0)
             {
               TCCR1A = 0xA2; // Both Non Inverted
@@ -169,7 +169,7 @@ void SWGControlPanel()												// Control Panel
             OCR1B   = (int)SWGOCRMath12;
             Serial.println("DONE");
           break;
-          case '0':													// Stop Timer
+          case '0':						// Stop Timer
             TCCR1A	= 0;
             TCCR1B	= 0;
             ICR1 	= 0;
